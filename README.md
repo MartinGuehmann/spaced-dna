@@ -1,14 +1,17 @@
 This is a fork of the *spaced words* approach to alignment-free dna comparision. Upstream is located at http://spaced.gobics.de/
 
-_______________________________________________________________________________________________________________
+# Installation
 
-to compile type:
+Compiling is simple:
+
 	make
 
-run with:
+Execute with:
+
 	./spaced [options] <sequence file>
 
-options:
+The available options are:
+
 	 Options:
 	-h: print this help and exit"
 	-o <file>: output file name (default: DMat)"
@@ -19,8 +22,10 @@ options:
 	-t <integer>: numer of threads (default: 25 threads)"
 	-r: don't consider the reverse complement"
 	-d EU | JS | EV: change distance type to Euclidean, Jensen-Shannon, evolutionary distance (default: EV)" 
-_______________________________________________________________________________________________________________
-Scientific publications using Spaced Words should cite:
+
+# References
+
+*Spaced Words* is scientific software. If used in a scientific publication, please cite:
 
     C.-A. Leimeister, M. Boden, S. Horwege, S. Lindner, B. Morgenstern (2014)
     Fast alignment-free sequence comparison using spaced-word frequencies
@@ -35,7 +40,8 @@ Scientific publications using Spaced Words should cite:
     B. Morgenstern, B. Zhu, S. Horwege, C.-A Leimeister (2015)
     Estimating evolutionary distances between genomic sequences from spaced-word matches
     Algorithms for Molecular Biology 10, 5
-_______________________________________________________________________________________________________________
 
-contact:
+# Contact
+
+upstream contact:
 chris.leimeister@stud.uni-goettingen.de
