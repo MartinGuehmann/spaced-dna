@@ -1,4 +1,4 @@
-CPPFLAGS+=-Wall -Wextra -std=c++11
+CPPFLAGS+=-Wall -Wextra -std=c++11 -Wno-char-subscripts
 CXXFLAGS+=-O3 -fopenmp
 
 %.o: %.cxx
