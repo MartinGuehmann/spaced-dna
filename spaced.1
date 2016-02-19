@@ -1,0 +1,59 @@
+.TH SPACED "1" "February 2016" "0.version" ""
+.SH NAME
+spaced \- alignment-free sequence comparison
+.SH SYNOPSIS
+.B spaced
+[\fI-r\fR] [\fI-k INT\fR] [\fI-l INT\fR] [\fI-n INT\fR] [\fI-t INT\fR] [\fI-d TYPE\fR] [\fI-f FILE\fR] \fIFILES\fR...
+.SH DESCRIPTION
+.TP
+Spaced Words is a new approach to alignment-free sequence comparison. While most alignment-free algorithms compare the word-composition of sequences, Spaced Words uses a pattern of care and don't care positions. The occurrence of a spaced word in a sequence is then defined by the characters at the match positions only, while the characters at the don't care positions are ignored (this was originally inspired by the PatternHunter algorithm for homology search in databases). Instead of comparing the frequencies of contiguous words in the input sequences, our new approach compares the frequencies of the spaced words according to the pre-defined pattern. An information-theoretic distance measure is then used to define pairwise distances on the set of input sequences based on their spaced-word frequencies. The original version of our spaced-words approach was published in Boden et al.(2013). 
+.SH OUTPUT
+The output is a symmetrical distance matrix similar to \fIPHYLIP\fR format, with each entry representing divergence with a positive real number. A distance of zero means that two sequences are identical, whereas other values are estimates for the nucleotide substitution rate (Jukes-Cantor corrected). 
+.SH OPTIONS
+.TP
+\fB\-o\fR <file>
+Print the distance matrix to the given \fIfile\fR. Default is \fIDMat\fR.
+.TP
+\fB\-k\fR <int>
+Set the patterns weight. Default: 14.
+.TP
+\fB\-l\fR <int>
+Set \fIdon't care\fR positions for the used patterns. Default: 15.
+.TP
+\fB\-n\fR <int>
+Set the number of patterns. Default: 5.
+.TP
+\fB\-f\fR <file>
+Instead of generating new patterns, use read them from the given file.
+.TP
+\fB\-t\fR <INT>
+The number of threads to be used; by default, 25 threads are used. 
+.br
+Multithreading is only available if \fBspaced\fR was compiled with OpenMP support.
+.TP
+\fB-r\fR
+Skip comparison with the reverse complement.
+.TP
+\fB-d\fR <type>
+The distances can be compute with different measures. Available options are Euclidean (\fIEU\fR), Jensen-Shannon (\fIJS\fR), and evolutionary distance (\fIEV\fR). Default: EV.
+.TP
+\fB\-h\fR
+Prints the synopsis and an explanation of available options.
+.SH COPYRIGHT
+Copyright \(co 2016 Chris Leimeister <chris.leimeister@stud.uni-goettingen.de>
+License GPLv3+: GNU GPL version 3 or later.
+.br
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+The full license text is available at <http://gnu.org/licenses/gpl.html>.
+.PP
+.SH REFERENCES
+1) C.-A. Leimeister, M. Boden, S. Horwege, S. Lindner, B. Morgenstern (2014). Fast alignment-free sequence comparison using spaced-word frequencies, Bioinformatics <http://bioinformatics.oxfordjournals.org/content/early/2014/04/03/bioinformatics.btu177>
+.br
+2) S. Horwege, S. Linder, M. Boden, K. Hatje, M. Kollmar, C.-A. Leimeister, B. Morgenstern (2014). Spaced words and kmacs: fast alignment-free sequence comparison based on inexact word matches, Nucleic Acids Research 42, W7-W11 <http://nar.oxfordjournals.org/content/42/W1/W7.abstract>
+.br
+3) B. Morgenstern, B. Zhu, S. Horwege, C.-A Leimeister (2015). Estimating evolutionary distances between genomic sequences from spaced-word matches, Algorithms for Molecular Biology 10,5
+.SH BUGS
+.SS Reporting Bugs
+Please report bugs to <kloetzl@evolbio.mpg.de> or <chris.leimeister@stud.uni-goettingen.de>.
+.SS
