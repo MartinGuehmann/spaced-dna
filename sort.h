@@ -153,9 +153,9 @@ void writeDmat(vector<vector<double> > dmat, vector<sequence<uint> >& sequences,
 
 template<typename uint>
 void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int distance, int threads, int weight, int dontCare, bool revComp, string output){
+	int ell=dontCare+weight-1;
 	#ifdef _OPENMP
 	omp_set_dynamic(0);
-	int ell=dontCare+weight-1;
 	omp_set_num_threads(threads);
 	#endif
 	unsigned char alphabet[256]={};
