@@ -1,3 +1,7 @@
+This is a fork of the *spaced words* approach to alignment-free dna comparision. Upstream is located at http://spaced.gobics.de/
+
+_______________________________________________________________________________________________________________
+
 to compile type:
 	make
 
