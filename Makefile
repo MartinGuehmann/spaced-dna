@@ -1,4 +1,9 @@
+CPPFLAGS=-Wall -Wextra -std=c++11
+CXXFLAGS=-O3 -fopenmp
 
-all: 
-		g++ -O3 -std=c++11 spaced.cc  variance.cpp patternset.cpp extkey.cpp -o spaced -fopenmp
- 
+
+spaced: spaced.cc variance.cpp patternset.cpp extkey.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -o $@ $^
+
+clean:
+	rm -f *.o spaced
