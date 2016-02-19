@@ -10,6 +10,11 @@ AC_PROG_CXX
 AC_LANG(C++)
 AC_OPENMP
 
+# Check available standards.
+AC_CONFIG_MACRO_DIR([m4])
+AX_CXX_COMPILE_STDCXX_11([],[mandatory])
+
+
 # Checks for header files.
 AC_CHECK_HEADERS([inttypes.h stdlib.h string.h unistd.h])
 
