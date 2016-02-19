@@ -369,7 +369,7 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 				fill(row[thread].begin(), row[thread].end(), 0);
 				for(uint i=0; i<cnt;){
 					unsigned long long key_t=words[i].key;
-					row[omp_get_thread_num()][words[i].seq]++;
+					row[thread][words[i].seq]++;
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
@@ -614,7 +614,7 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 				fill(row[thread].begin(), row[thread].end(), 0);
 				for(uint i=0; i<cnt;){
 					unsigned long long key_t=words[i].key;
-					row[omp_get_thread_num()][words[i].seq]++;
+					row[thread][words[i].seq]++;
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
