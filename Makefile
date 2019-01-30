@@ -1,4 +1,4 @@
 
 all: 
-		g++ -O3 -std=c++11 spaced.cc  variance.cpp patternset.cpp extkey.cpp -o spaced -fopenmp
+		g++ -O3 -fopenmp -std=c++11 src/spaced.cc  src/variance.cpp src/patternset.cpp -o spaced
  

@@ -16,7 +16,7 @@
 #include "variance.h"
 
 bool revComp=true;
-int number = 5, dontcare = 15, weight = 14, threads = 15, distanceType = EV;
+int number = 5, dontcare = 15, weight = 14, threads = 15, distanceType = JS;
 string patternFile="", output="DMat";
 
 void printHelp(){
@@ -31,18 +31,9 @@ void printHelp(){
     "\n\t -f <file>: use patterns in <file> instead of random patterns"  
     "\n\t -t <integer>: numer of threads (default: 25 threads)"
     "\n\t -r: don't consider the reverse complement"
-    "\n\t -d EU | JS | EV: change distance type to Euclidean, Jensen-Shannon, evolutionary distance (default: EV)" 
+    "\n\t -d EU | JS | EV: change distance type to Euclidean, Jensen-Shannon, evolutionary distance (default: JS)" 
     "\n";
 	cout << help << endl;
-}
-
-void parsePattern(string filePath, vector<string>& patternSet){
-    ifstream file(filePath.c_str());
-    string str; 
-    while (getline(file, str)){
-            patternSet.push_back(str);
-        }
-    file.close();
 }
 
 void parseParameters(int argc, char** argv){
@@ -166,18 +157,28 @@ int main(int argc, char *argv[]){
 	unsigned char *str = readData(inputFile, n);
 	if (str == NULL)
 		return 0;
+
 	vector<string> patternSet;
+    vector< vector<char> > tmp_pat_set;
+    variance variance_obj;
 	if(patternFile.length()==0){
-		variance* variance_obj;
-        int* laenge = new int[2];
-        laenge[0]=laenge[1]=dontcare+weight;
-        variance_obj = new variance(number,laenge, weight);
-        variance_obj->Silent(); 
-        variance_obj->Improve(500);                            //5000 mal versuchen ein Pattern zu verbessern
-        patternSet = variance_obj->GetPattern();
+        variance_obj = variance(number,weight,dontcare,dontcare);
+        variance_obj.Init(true, true, true, true, false, NULL);
+        variance_obj.Improve(5000);                            //5000 mal versuchen ein Pattern zu verbessern 
 	}
-	else
-	parsePattern(patternFile, patternSet);
+	else{
+        variance_obj = variance(patternFile.c_str(),0.75,0.25,16000);
+        variance_obj.Init(true, true, true, true, false, NULL);
+    }
+    number = variance_obj.GetSize();
+    weight = variance_obj.GetWeight();
+    dontcare = variance_obj.GetMinDontcare();
+    tmp_pat_set = variance_obj.GetPattern();
+    for(size_t i = 0; i < tmp_pat_set.size(); i++){
+        patternSet.push_back(string(tmp_pat_set[i].begin(),tmp_pat_set[i].end()));
+    }
+    tmp_pat_set.clear();
+
     double seq=0;
     int length=0;
     double dna=0;
