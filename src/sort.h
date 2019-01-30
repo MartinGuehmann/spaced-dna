@@ -130,24 +130,31 @@ void writeDmat(vector<vector<double> > dmat, vector<sequence<uint> >& sequences,
 	std::cerr << "totally not writing to " << filename << std::endl;
 	std::cout << sequences.size() << endl;
 	for (int i = 0; i < sequences.size(); i++) {
-		for(uint k=0; k<10;k++){
-			if( k+sequences[i].headerStart <= sequences[i].headerEnd )
-				std::cout << seqData[k+sequences[i].headerStart];
-			else
-				std::cout << " ";
+		auto name = std::string(seqData + sequences[i].headerStart, seqData + sequences[i].headerEnd + 1);
+		auto name_end = name.find_first_of(" \t\v");
+		if (name_end != string::npos) {
+			name.erase(name.begin() + name_end, name.end());
 		}
-		std::cout << " ";
-     	for (int j = 0; j < sequences.size(); j++) {
+
+		char buffer[31] = {0};
+		snprintf(buffer, 31, "%-10s", name.c_str());
+
+		std::cout << buffer;
+
+		for (int j = 0; j < sequences.size(); j++) {
+			double value = 0.0;
+
 			if (i > j) 
-	    			std::cout << setprecision(12) << dmat[i][j] << "  ";
-			else if(j>i)
-				std::cout << setprecision(12) << dmat[j][i] << "  ";
+				value = dmat[i][j];
+			else if(j > i)
+				value = dmat[j][i];
 			else
-					std::cout << setprecision(12) << "0" << "  ";
-     	}
-      		std::cout << endl;
+				value = 0.0;
+
+			std::cout << "  " << setprecision(6) << value;
+		}
+		std::cout << endl;
 	}
-	//outfile << dmat[1][0] << endl;
 }
 
 template<typename uint>

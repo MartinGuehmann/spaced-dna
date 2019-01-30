@@ -219,7 +219,7 @@ int main(int argc, char *argv[]){
             cout << "Maximum weight for DNA sequences is 32" << endl;
             exit(0);
         }
-        cout << seq << " DNA sequences read of total length "<< length << endl;
+        cerr << seq << " DNA sequences read of total length "<< length << endl;
     	if(n>=0xffffffff)
     		spacedDNA<unsigned long long>(patternSet, str,n, distanceType, threads, weight, dontcare, revComp, output);
     	else
