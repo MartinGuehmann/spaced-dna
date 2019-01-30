@@ -127,26 +127,25 @@ void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsig
 
 template<typename uint>
 void writeDmat(vector<vector<double> > dmat, vector<sequence<uint> >& sequences, string filename, unsigned char* seqData){
-	ofstream outfile;
-	outfile.open(filename.c_str());
-	outfile << sequences.size() << endl;
+	std::cerr << "totally not writing to " << filename << std::endl;
+	std::cout << sequences.size() << endl;
 	for (int i = 0; i < sequences.size(); i++) {
 		for(uint k=0; k<10;k++){
 			if( k+sequences[i].headerStart <= sequences[i].headerEnd )
-				outfile << seqData[k+sequences[i].headerStart];
+				std::cout << seqData[k+sequences[i].headerStart];
 			else
-				outfile << " ";
+				std::cout << " ";
 		}
-		outfile << " ";
+		std::cout << " ";
      	for (int j = 0; j < sequences.size(); j++) {
 			if (i > j) 
-	    			outfile << setprecision(12) << dmat[i][j] << "  ";
+	    			std::cout << setprecision(12) << dmat[i][j] << "  ";
 			else if(j>i)
-				outfile << setprecision(12) << dmat[j][i] << "  ";
+				std::cout << setprecision(12) << dmat[j][i] << "  ";
 			else
-					outfile << setprecision(12) << "0" << "  ";
+					std::cout << setprecision(12) << "0" << "  ";
      	}
-      		outfile << endl;
+      		std::cout << endl;
 	}
 	//outfile << dmat[1][0] << endl;
 }
