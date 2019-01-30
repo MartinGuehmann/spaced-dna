@@ -187,7 +187,7 @@ int main(int argc, char *argv[]){
         c=toupper(str[i]);
         if(c=='>'){
             while(str[++i]!='\n');
-                seq++;
+            seq++;
         }
         if(isalpha(c)){
             switch(c){
