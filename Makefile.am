@@ -1,5 +1,5 @@
 bin_PROGRAMS = spaced
-spaced_SOURCES = extkey.cxx extkey.h patternset.cxx patternset.h sort.h spaced.cxx variance.cxx variance.h
+spaced_SOURCES = src/patternset.cpp src/patternset.h src/sort.h src/spaced.cc src/variance.cpp src/variance.h
 spaced_CPPFLAGS = $(OPENMP_CPPFLAGS) -Wall -Wextra -std=c++11 -Wno-char-subscripts
 spaced_CXXFLAGS = $(OPENMP_CXXFLAGS)
 

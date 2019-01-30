@@ -2,7 +2,7 @@ AC_PREREQ([2.69])
 AC_INIT([spaced], [1.0.2+master])
 AM_INIT_AUTOMAKE([-Wall foreign])
 
-AC_CONFIG_SRCDIR([extkey.cxx])
+AC_CONFIG_SRCDIR([src/spaced.cc])
 AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
