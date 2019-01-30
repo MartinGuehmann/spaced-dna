@@ -18,6 +18,7 @@
  * @author: Lars Hahn - 12.05.2016, Georg-August-Universitaet Goettingen
  * @version: 1.2.0 05/2016
  */
+#include <random>
 #include "patternset.h"
 
 
