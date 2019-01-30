@@ -185,34 +185,18 @@ void patternset::ReInit(){
  * Checks, if bitmode is possible.
  */
 void patternset::CheckParams(){
-	if(size < 0){
-		size = std::abs(size);
-		if(size <= 0){
-			size = 10;
-			update = true;
-		}
-	}
-	if(max_dontcare < 0 || min_dontcare < 0){
-		max_dontcare = std::abs(max_dontcare);
-		min_dontcare = std::abs(min_dontcare);
-	}
 	if(max_dontcare < min_dontcare){
 		std::swap(max_dontcare,min_dontcare);
 	}
 	if(weight < 2){
-		if(weight < 0){
-			weight = std::abs(weight);
+		if(size != 1){
+			size = 1;
+			update = true;
 		}
-		else{
-			if(size != 1){
-				size = 1;
-				update = true;
-			}
-			if(max_dontcare != 0 || max_dontcare != 0){
-				min_dontcare = 0;
-				max_dontcare = 0;
-				update = true;
-			}
+		if(max_dontcare != 0 || max_dontcare != 0){
+			min_dontcare = 0;
+			max_dontcare = 0;
+			update = true;
 		}
 	}
 	if(weight == 2){
