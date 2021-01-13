@@ -2,8 +2,14 @@ This is a fork of the *spaced words* approach to alignment-free dna comparision.
 
 # Installation
 
-Compiling is simple:
+Regenerate the build system and compile:
 
+	libtoolize --force
+	aclocal
+	autoheader
+	automake --force-missing --add-missing
+	autoconf
+	./configure
 	make
 
 Execute with:
