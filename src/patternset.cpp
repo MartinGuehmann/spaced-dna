@@ -459,10 +459,6 @@ bool patternset::VerifyPatternCondition(){
 	min_dontcare -= weight;
 	max_dontcare -= weight;
 
-	if(min_dontcare < 0 || max_dontcare < 0){
-		pattern_error = true;
-	}
-
 	return pattern_error;
 }
 
