@@ -512,7 +512,6 @@ template<typename uint>
 void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int distance, int threads, int weight, int dontCare, string output){
 	#ifdef _OPENMP
 	omp_set_dynamic(0);
-	int ell=dontCare+weight-1;
 	omp_set_num_threads(threads);
 	#endif
 	unsigned char alphabet[256]={};
