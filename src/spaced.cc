@@ -211,10 +211,6 @@ int main(int argc, char *argv[]){
         }
     }
     if(dna/length>0.9){
-        if(seq>0x7FFF){
-            cerr << "Too many sequences" << endl;
-            exit(0);
-        }
         if(weight>32){
             cerr << "Maximum weight for DNA sequences is 32" << endl;
             exit(0);
@@ -226,11 +222,7 @@ int main(int argc, char *argv[]){
     		spacedDNA<unsigned int>(patternSet, str,n, distanceType, threads,weight, dontcare, revComp, output);
     }
     else{
-        if(seq>0xFFFF){
-            cerr << "Too many sequences" << endl;
-            exit(0);
-        }
-         if(weight>12){
+        if(weight>12){
             cerr << "Maximum weight for protein sequences is 12" << endl;
             exit(0);
         }
