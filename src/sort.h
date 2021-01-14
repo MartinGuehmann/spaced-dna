@@ -70,7 +70,7 @@ struct sequence{
 	vector<double> frequenciesRevComp={0,0,0,0};
 };
 
-void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsigned long long pos, unsigned long length, unsigned char* seqData, int weight){
+void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsigned long long pos, size_t length, unsigned char* seqData, int weight){
 	unsigned char alphabet[256]={};
 	alphabet['A']=0;alphabet['C']=1;alphabet['G']=2;alphabet['T']=3; // mapping A -> 00, C -> 01 etc. without overhead
 	unsigned char w;
@@ -80,7 +80,7 @@ void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsig
 	unsigned char p0,p1,p2,p3;
 	p0=pattern[0];p1=pattern[1];p2=pattern[2];p3=pattern[3];
 	if(weight>=4){
-		for(int i=0; i<length;i++){
+		for(size_t i=0; i<length;i++){
 			w=0;
 			unsigned char* tmp=&seqData[i+pos];
 			w|=alphabet[*(tmp+p0)] << 6;
@@ -93,7 +93,7 @@ void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsig
 	else if (weight==3){
 		unsigned char p0,p1,p2;
 		p0=pattern[0];p1=pattern[1];p2=pattern[2];
-		for(int i=0; i<length;i++){
+		for(size_t i=0; i<length;i++){
 			w=0;
 			unsigned char* tmp=&seqData[i+pos];
 			w|=alphabet[*(tmp+p0)] << 4;
@@ -105,7 +105,7 @@ void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsig
 	else if(weight==2){
 		unsigned char p0,p1;
 		p0=pattern[0];p1=pattern[1];
-		for(int i=0; i<length;i++){
+		for(size_t i=0; i<length;i++){
 			w=0;
 			unsigned char* tmp=&seqData[i+pos];
 			w|=alphabet[*(tmp+p0)] << 2;
@@ -117,7 +117,7 @@ void getFirstBits(vector<unsigned char>&pattern, unsigned char* firstBits, unsig
 	else{
 		unsigned char p0;
 		p0=pattern[0];
-		for(int i=0; i<length;i++){
+		for(size_t i=0; i<length;i++){
 			unsigned char* tmp=&seqData[i+pos];
 			w=alphabet[*(tmp+p0)];
 			firstBits[i]=w;
@@ -129,7 +129,7 @@ template<typename uint>
 void writeDmat(vector<vector<double> > dmat, vector<sequence<uint> >& sequences, string filename, unsigned char* seqData){
 	std::cerr << "totally not writing to " << filename << std::endl;
 	std::cout << sequences.size() << endl;
-	for (int i = 0; i < sequences.size(); i++) {
+	for (size_t i = 0; i < sequences.size(); i++) {
 		auto name = std::string(seqData + sequences[i].headerStart, seqData + sequences[i].headerEnd + 1);
 		auto name_end = name.find_first_of(" \t\v");
 		if (name_end != string::npos) {
@@ -141,7 +141,7 @@ void writeDmat(vector<vector<double> > dmat, vector<sequence<uint> >& sequences,
 
 		std::cout << buffer;
 
-		for (int j = 0; j < sequences.size(); j++) {
+		for (size_t j = 0; j < sequences.size(); j++) {
 			double value = 0.0;
 
 			if (i > j) 
@@ -167,7 +167,6 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 	unsigned char alphabet[256]={};
 	alphabet['A']=0;alphabet['C']=1;alphabet['G']=2;alphabet['T']=3;
 	vector<sequence<uint> > sequences; 
-	int seqNum;
 	uint totalSeqLength=0;
 	for(uint i=0,j=0; i<n;i++){
 		if(seqData[i]==';'){ //remove comments
@@ -221,9 +220,9 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 	}
 	sequences.back().seqEnd=totalSeqLength;
 	sequences.back().seqWordEnd=totalSeqLength-(weight+dontCare)+1;
-	seqNum=sequences.size();
+	size_t seqNum=sequences.size();
 	uint cnt=0;
-	for(uint i=0; i<seqNum;i++){
+	for(size_t i=0; i<seqNum;i++){
 		uint start=sequences[i].seqStart;
 		uint end=sequences[i].seqEnd-1;
 		sequences[i].revCompStart=cnt+totalSeqLength;
@@ -244,7 +243,7 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 			}
 		}
 	}
-	for(int i=0; i< sequences.size();i++){
+	for(size_t i=0; i< sequences.size();i++){
 		for(int j=0; j<4;j++){
 			sequences[i].frequencies[j]=sequences[i].frequencies[j]/sequences[i].length;
 			sequences[i].frequenciesRevComp[j]=sequences[i].frequenciesRevComp[j]/sequences[i].length;
@@ -258,8 +257,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 	vector<vector <vector <double> > > dmat(threads, vector< vector<double> >(seqNum, vector<double>(seqNum,0)));
 	vector<vector <double> > dmatFinal(seqNum, vector<double>(seqNum,0));
 	vector<vector<double> > row(threads, vector<double>(seqNum*2));
-	for(int p = 0; p < patternSet.size(); p++ ){
-		for(int k = 0; k < patternSet[p].length(); k++){
+	for(size_t p = 0; p < patternSet.size(); p++ ){
+		for(size_t k = 0; k < patternSet[p].length(); k++){
 			if (patternSet[p][k] == '1')
 				matchPos.push_back(k);
 			else
@@ -268,7 +267,7 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 		getFirstBits(matchPos, &firstBits[0], 0, totalSeqLength, seqData, weight);
 		fill(prefixSum.begin(), prefixSum.end(), 0);
 
-		for(int i=0;i<seqNum;i++){
+		for(size_t i=0;i<seqNum;i++){
 			for(uint j=sequences[i].seqStart; j<sequences[i].seqWordEnd;j++){
 				++prefixSum[(firstBits[j])];	
 			}
@@ -282,14 +281,14 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 			double cnt=0;	
 			unsigned long long w;
 			unsigned char bits;
-			for(int i=0;i<seqNum;i++){
+			for(size_t i=0;i<seqNum;i++){
 				for(uint j=sequences[i].seqStart; j<sequences[i].seqWordEnd;j++){
 					if(firstBits[j]==k){
 						w=0;
 						bits=weight*2-2;
 						unsigned char c;
 						bool correctWord=true;
-						for(int o=0; o<matchPos.size();o++){
+						for(size_t o=0; o<matchPos.size();o++){
 							uint pos=matchPos[o];
 							c= seqData[j+pos];
 							if(c=='N')
@@ -310,7 +309,7 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 							bits=weight*2-2;
 							unsigned char c;
 							bool correctWord=true;
-							for(int o=0; o<matchPos.size();o++){
+							for(size_t o=0; o<matchPos.size();o++){
 								uint pos=matchPos[o];
 								c= seqData[j+pos];
 								if(c=='N')
@@ -339,8 +338,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
-						for(int i=0;i<seqNum;i++){
-							for(int j=0; j<i; j++){
+						for(size_t i=0;i<seqNum;i++){
+							for(size_t j=0; j<i; j++){
 								double t1;
 								if(revComp)
 									t1=abs(row[thread][i]-(row[thread][j]+row[thread][j+seqNum]));
@@ -360,8 +359,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
-					for(int i=0;i<seqNum;i++){
-						for(int j=0; j<i; j++){
+					for(size_t i=0;i<seqNum;i++){
+						for(size_t j=0; j<i; j++){
 							if(revComp)
 								dmat[thread][i][j]+=min(row[thread][i],row[thread][j]+row[thread][j+seqNum]);
 							else
@@ -379,7 +378,7 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
-					for(int i=0; i<seqNum; i++){
+					for(size_t i=0; i<seqNum; i++){
 						if(revComp){
 							row[thread][i+seqNum]=(row[thread][i]+row[thread][i+seqNum])/((sequences[i].seqWordEnd-sequences[i].seqStart)*2);
 							row[thread][i]/=sequences[i].seqWordEnd-sequences[i].seqStart;
@@ -387,9 +386,9 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 						else
 							row[thread][i]/=sequences[i].seqWordEnd-sequences[i].seqStart;
 					}
-					for(int i=0;i<seqNum;i++){
+					for(size_t i=0;i<seqNum;i++){
 						double row_i=row[thread][i];
-						for(int j=0; j<i; j++){
+						for(size_t j=0; j<i; j++){
 							double m;
 							double row_j;
 							if(revComp)
@@ -417,8 +416,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 		dCarePos.clear();
 		if(distance==EU || distance==JS){
 			for(int p=1; p<threads; p++){
-				for(int i=0;i<seqNum;i++){
-					for(int j=0; j<seqNum; j++){
+				for(size_t i=0;i<seqNum;i++){
+					for(size_t j=0; j<seqNum; j++){
 						dmat[0][i][j]+=dmat[p][i][j];
 						dmat[p][i][j]=0;
 					}
@@ -428,12 +427,12 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 				#ifdef _OPENMP
 				#pragma omp parallel for schedule(static)
 				#endif
-				for(int i=0;i<seqNum;i++){
-					for(int j=0; j<i; j++)
+				for(size_t i=0;i<seqNum;i++){
+					for(size_t j=0; j<i; j++)
 						dmat[0][i][j]=sqrt(dmat[0][i][j]);
 				}
-				for(int i=0;i<seqNum;i++){
-					for(int j=0; j<i; j++){
+				for(size_t i=0;i<seqNum;i++){
+					for(size_t j=0; j<i; j++){
 						dmatFinal[i][j]+=dmat[0][i][j];
 						dmat[0][i][j]=0;
 					}
@@ -443,13 +442,13 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 				#ifdef _OPENMP
 				#pragma omp parallel for schedule(static)
 				#endif
-				for(int i=0;i<seqNum;i++){
-					for(int j=0; j<i; j++){
+				for(size_t i=0;i<seqNum;i++){
+					for(size_t j=0; j<i; j++){
 						dmat[0][i][j]=(0.5*dmat[0][i][j]+0.5*dmat[0][j][i]);
 					}
 				}
-				for(int i=0;i<seqNum;i++){
-					for(int j=0; j<i; j++){
+				for(size_t i=0;i<seqNum;i++){
+					for(size_t j=0; j<i; j++){
 						dmatFinal[i][j]+=dmat[0][i][j];
 						dmat[0][i][j]=0;
 						dmat[0][j][i]=0;
@@ -459,15 +458,15 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 		}
 	}
 	if(patternSet.size()>1&&distance!=EV){
-		for(int i=0;i<seqNum;i++){
-			for(int j=0; j<i; j++)
+		for(size_t i=0;i<seqNum;i++){
+			for(size_t j=0; j<i; j++)
 				dmatFinal[i][j]/=patternSet.size();
 		}
 	}
 	else if(distance==EV){
 		for(int p=1; p<threads; p++){
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<seqNum; j++){
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<seqNum; j++){
 					dmat[0][i][j]+=dmat[p][i][j];
 				}
 			}
@@ -475,8 +474,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 		#ifdef _OPENMP
   		#pragma omp parallel for schedule(static)
   		#endif
-		for(int i=0;i<seqNum;i++){
-			for(int j=0; j<i; j++){
+		for(size_t i=0;i<seqNum;i++){
+			for(size_t j=0; j<i; j++){
 				double min=std::min(sequences[i].length,sequences[j].length)-ell;
 				double max=std::max(sequences[i].length,sequences[j].length)-ell;
 				double q=0;
@@ -500,8 +499,8 @@ void spacedDNA(vector<string>& patternSet, unsigned char* seqData, uint n, int d
 				}
 			}
 		}
-		for(int i=0;i<seqNum;i++){
-			for(int j=0; j<i; j++)
+		for(size_t i=0;i<seqNum;i++){
+			for(size_t j=0; j<i; j++)
 				dmatFinal[i][j]+=dmat[0][i][j];
 		}
 	}
@@ -519,7 +518,6 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 	alphabet['K']=10;alphabet['L']=11;alphabet['M']=12;alphabet['N']=13;alphabet['O']=14;alphabet['P']=15;alphabet['Q']=16;alphabet['R']=17;alphabet['S']=18;alphabet['T']=19;
 	alphabet['U']=20;alphabet['V']=21;alphabet['W']=22;alphabet['X']=23;alphabet['Y']=24;alphabet['Z']=25;
 	vector<sequence<uint> > sequences; 
-	int seqNum;
 	uint totalSeqLength=0;
 	for(uint i=0,j=0; i<n;i++){
 		if(seqData[i]==';'){ //remove comments
@@ -549,22 +547,22 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 	}
 	sequences.back().seqEnd=totalSeqLength;
 	sequences.back().seqWordEnd=totalSeqLength-(weight+dontCare)+1;
-	seqNum=sequences.size();
+	size_t seqNum=sequences.size();
 	vector<uint> prefixSum(PROT_BUCKETS,0);
 	vector<unsigned char> matchPos;
 	vector<unsigned char> dCarePos;
 	vector<vector <vector <double> > > dmat(threads, vector< vector<double> >(seqNum, vector<double>(seqNum)));
 	vector<vector <double> > dmatFinal(seqNum, vector<double>(seqNum,0));
 	vector<vector<double> > row(threads, vector<double>(seqNum));
-	for(int p = 0; p < patternSet.size(); p++ ){
-		for(int k = 0; k < patternSet[p].length(); k++){
+	for(size_t p = 0; p < patternSet.size(); p++ ){
+		for(size_t k = 0; k < patternSet[p].length(); k++){
 			if (patternSet[p][k] == '1')
 				matchPos.push_back(k);
 			else
 				dCarePos.push_back(k);
 		}
 		fill(prefixSum.begin(), prefixSum.end(), 0);
-		for(int i=0;i<seqNum;i++){
+		for(size_t i=0;i<seqNum;i++){
 			for(uint j=sequences[i].seqStart; j<sequences[i].seqWordEnd;j++){
 				++prefixSum[alphabet[seqData[j]]];	
 			}
@@ -575,13 +573,13 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 			double cnt=0;	
 			unsigned long long w;
 			unsigned char bits;
-			for(int i=0;i<seqNum;i++){
+			for(size_t i=0;i<seqNum;i++){
 				for(uint j=sequences[i].seqStart; j<sequences[i].seqWordEnd;j++){
 					if(alphabet[seqData[j]]==k){
 						w=0;
 						bits=weight*5-5;
 						unsigned char c;
-						for(int o=0; o<matchPos.size();o++){
+						for(size_t o=0; o<matchPos.size();o++){
 							uint pos=matchPos[o];
 							c= seqData[j+pos];
 							w|=(unsigned long long) alphabet[c] << bits;
@@ -605,8 +603,8 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
-					for(int i=0;i<seqNum;i++){
-						for(int j=0; j<i; j++){
+					for(size_t i=0;i<seqNum;i++){
+						for(size_t j=0; j<i; j++){
 							double t1;
 							t1=abs(row[thread][i]-row[thread][j]);
 							dmat[thread][i][j]+=t1*t1;
@@ -623,12 +621,12 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 					while(++i<cnt &&key_t==words[i].key){
 						row[thread][words[i].seq]++;
 					}
-					for(int i=0; i<seqNum; i++){
+					for(size_t i=0; i<seqNum; i++){
 						row[thread][i]/=sequences[i].seqWordEnd-sequences[i].seqStart;
 					}
-					for(int i=0;i<seqNum;i++){
+					for(size_t i=0;i<seqNum;i++){
 						double row_i=row[thread][i];
-						for(int j=0; j<i; j++){
+						for(size_t j=0; j<i; j++){
 							double m;
 							double row_j;
 							row_j=row[thread][j];
@@ -652,8 +650,8 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 		matchPos.clear();
 		dCarePos.clear();
 		for(int p=1; p<threads; p++){
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<seqNum; j++){
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<seqNum; j++){
 					dmat[0][i][j]+=dmat[p][i][j];
 				}
 			}
@@ -662,12 +660,12 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 			#ifdef _OPENMP
 			#pragma omp parallel for schedule(static)
 			#endif
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<i; j++)
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<i; j++)
 					dmat[0][i][j]=sqrt(dmat[0][i][j]);
 			}
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<i; j++)
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<i; j++)
 					dmatFinal[i][j]+=dmat[0][i][j];
 			}
 		}
@@ -675,20 +673,20 @@ void spacedProt(vector<string>& patternSet, unsigned char* seqData, uint n, int 
 			#ifdef _OPENMP
 			#pragma omp parallel for schedule(static)
 			#endif
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<i; j++){
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<i; j++){
 					dmat[0][i][j]=(0.5*dmat[0][i][j]+0.5*dmat[0][j][i]);
 				}
 			}
-			for(int i=0;i<seqNum;i++){
-				for(int j=0; j<i; j++)
+			for(size_t i=0;i<seqNum;i++){
+				for(size_t j=0; j<i; j++)
 					dmatFinal[i][j]+=dmat[0][i][j];
 			}
 		}
 	}
 	if(patternSet.size()>1&&distance!=EV){
-		for(int i=0;i<seqNum;i++){
-			for(int j=0; j<i; j++)
+		for(size_t i=0;i<seqNum;i++){
+			for(size_t j=0; j<i; j++)
 				dmatFinal[i][j]/=patternSet.size();
 		}
 	}
