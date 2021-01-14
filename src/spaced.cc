@@ -29,7 +29,7 @@ void printHelp(){
     "\n\t -l <integer>: pattern don't care positions (default 15)"
     "\n\t -n <integer>: number of patterns (default: 5)"  
     "\n\t -f <file>: use patterns in <file> instead of random patterns"  
-    "\n\t -t <integer>: numer of threads (default: 25 threads)"
+    "\n\t -t <integer>: number of threads (default: 25 threads)"
     "\n\t -r: don't consider the reverse complement"
     "\n\t -d EU | JS | EV: change distance type to Euclidean, Jensen-Shannon, evolutionary distance (default: JS)" 
     "\n";
