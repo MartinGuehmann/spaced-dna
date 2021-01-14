@@ -212,7 +212,7 @@ int main(int argc, char *argv[]){
     }
     if(dna/length>0.9){
         if(weight>32){
-            cerr << "Maximum weight for DNA sequences is 32" << endl;
+            cerr << "Weight is " << weight << " but maximum weight for DNA sequences is 32" << endl;
             exit(0);
         }
         cerr << seq << " DNA sequences read of total length "<< length << endl;
@@ -223,7 +223,7 @@ int main(int argc, char *argv[]){
     }
     else{
         if(weight>12){
-            cerr << "Maximum weight for protein sequences is 12" << endl;
+            cerr << "Weight is " << weight << " but maximum weight for protein sequences is 12" << endl;
             exit(0);
         }
         cerr << seq << " protein sequences read of total length "<< length << endl;
