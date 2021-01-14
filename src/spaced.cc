@@ -33,7 +33,7 @@ void printHelp(){
     "\n\t -r: don't consider the reverse complement"
     "\n\t -d EU | JS | EV: change distance type to Euclidean, Jensen-Shannon, evolutionary distance (default: JS)" 
     "\n";
-	cout << help << endl;
+	cerr << help << endl;
 }
 
 void parseParameters(int argc, char** argv){
@@ -212,11 +212,11 @@ int main(int argc, char *argv[]){
     }
     if(dna/length>0.9){
         if(seq>0x7FFF){
-            cout << "Too many sequences" << endl;
+            cerr << "Too many sequences" << endl;
             exit(0);
         }
         if(weight>32){
-            cout << "Maximum weight for DNA sequences is 32" << endl;
+            cerr << "Maximum weight for DNA sequences is 32" << endl;
             exit(0);
         }
         cerr << seq << " DNA sequences read of total length "<< length << endl;
@@ -227,16 +227,16 @@ int main(int argc, char *argv[]){
     }
     else{
         if(seq>0xFFFF){
-            cout << "Too many sequences" << endl;
+            cerr << "Too many sequences" << endl;
             exit(0);
         }
          if(weight>12){
-            cout << "Maximum weight for protein sequences is 12" << endl;
+            cerr << "Maximum weight for protein sequences is 12" << endl;
             exit(0);
         }
-        cout << seq << " protein sequences read of total length "<< length << endl;
+        cerr << seq << " protein sequences read of total length "<< length << endl;
         if(distanceType==EV){
-            cout << "Evolutionary distance not available for protein sequences"<< endl;
+            cerr << "Evolutionary distance not available for protein sequences"<< endl;
             exit(0);
         }
         if(n>=0xffffffff)

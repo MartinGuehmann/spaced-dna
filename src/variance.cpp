@@ -516,15 +516,15 @@ void variance::Improve(uint32_t limits){
 					
 					if(loops == 1 && (!silent || impro_silent)){
 						if(!quiet){
-							std::cout << "*** BETTER PATTERN " << better_pattern << " *** \t(random permutation)" << std::endl;
-							std::cout << "Step " << i << " / " << limits << std::endl << "Patternset: \n";
+							std::cerr << "*** BETTER PATTERN " << better_pattern << " *** \t(random permutation)" << std::endl;
+							std::cerr << "Step " << i << " / " << limits << std::endl << "Patternset: \n";
 							pattern_set.Print();
-							std::cout << outvar << GetVariance() << std::endl;
-							std::cout << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
+							std::cerr << outvar << GetVariance() << std::endl;
+							std::cerr << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
 						}
 						else{
-							std::cout << "\r*** BETTER PATTERN " << better_pattern << " *** \t(random permutation)";
-							std::cout.flush();
+							std::cerr << "\r*** BETTER PATTERN " << better_pattern << " *** \t(random permutation)";
+							std::cerr.flush();
 						}
 					}
 				}
@@ -547,7 +547,7 @@ void variance::Improve(uint32_t limits){
 			var_iterator--;
 		}
 		if(!silent && quiet){
-			std::cout << std::endl;
+			std::cerr << std::endl;
 		}
 	}
 	else if(!improve && !silent){
@@ -574,10 +574,10 @@ void variance::Improve(uint32_t limits, uint32_t loops){
 		this->loops = loops;
 
 		if(!silent || best_silent){
-			std::cout << "\n===== First patternset =====" << std::endl;
+			std::cerr << "\n===== First patternset =====" << std::endl;
 			pattern_set.Print();
-			std::cout << outvar << GetVariance() << std::endl;
-			std::cout << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
+			std::cerr << outvar << GetVariance() << std::endl;
+			std::cerr << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
 		}
 
 		best_variance_val = variance_val;
@@ -589,15 +589,15 @@ void variance::Improve(uint32_t limits, uint32_t loops){
 				better_pattern++;
 				 if(loops != 1 && (!silent || impro_silent)){
 				 		if(!quiet){
-				 			std::cout << "\n*** BETTER PATTERN " << better_pattern << " *** \t(oc/variance optimization)" << std::endl;
-				 			std::cout << "Step " << i << " / " << loops << std::endl << "Patternset: \n";
+				 			std::cerr << "\n*** BETTER PATTERN " << better_pattern << " *** \t(oc/variance optimization)" << std::endl;
+				 			std::cerr << "Step " << i << " / " << loops << std::endl << "Patternset: \n";
 				 			pattern_set.Print();
-				 			std::cout << outvar << GetVariance() << std::endl;
-				 			std::cout << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
+				 			std::cerr << outvar << GetVariance() << std::endl;
+				 			std::cerr << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
 				 		}
 				 		else{
-				 			std::cout << "\r*** BETTER PATTERN " << better_pattern << " *** \t(oc/variance optimization)";
-				 			std::cout.flush();
+				 			std::cerr << "\r*** BETTER PATTERN " << better_pattern << " *** \t(oc/variance optimization)";
+				 			std::cerr.flush();
 				 		}
 				 	}
 				best_variance_val = variance_val;
@@ -606,16 +606,16 @@ void variance::Improve(uint32_t limits, uint32_t loops){
 			ReInit();
 		}
 		if(!silent || best_silent){
-			std::cout << std::endl;
+			std::cerr << std::endl;
 		}
 		pattern_set = best_pattern_set;
 		ReInit(pattern_set);
 
 		if(!silent || best_silent){
-			std::cout << "\n===== Best patternset ======" << std::endl;
+			std::cerr << "\n===== Best patternset ======" << std::endl;
 			pattern_set.Print();
-			std::cout << outvar << GetVariance() << std::endl;
-			std::cout << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
+			std::cerr << outvar << GetVariance() << std::endl;
+			std::cerr << "norm_" << outvar << GetNormVariance() << std::endl << std::endl;
 		}
 		if(isOutFile && best_silent){
 			pattern_out.open(outFile);

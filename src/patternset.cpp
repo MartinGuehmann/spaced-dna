@@ -293,7 +293,7 @@ std::vector<std::vector<char> > patternset::CreatePattern(){
 	std::vector<char> pat;
 	uint32_t tmp_weight, pos;
 	if(!silent){
-		std::cout << "Generating pattern automatically ...\n" << std::endl;
+		std::cerr << "Generating pattern automatically ...\n" << std::endl;
 	}
 
 	if(weight != 1){
@@ -316,9 +316,9 @@ std::vector<std::vector<char> > patternset::CreatePattern(){
 				patterns.push_back(pat);
 				if(!silent){
 					for(uint32_t i = 0; i < pat.size(); i++){
-						std::cout << pat[i];
+						std::cerr << pat[i];
 					}
-					std::cout << std::endl;
+					std::cerr << std::endl;
 				}
 			}
 			else{
@@ -334,7 +334,7 @@ std::vector<std::vector<char> > patternset::CreatePattern(){
 	}
 
 	if(!silent){
-		std::cout << "\nDone." << std::endl << std::endl;
+		std::cerr << "\nDone." << std::endl << std::endl;
 	}
 
 	return patterns;
@@ -889,9 +889,9 @@ void patternset::Print(){
 	}
 	for(uint32_t i = 0; i < size; i++){
 		for(uint32_t j = 0; j < pattern_set[i].size(); j++){
-			std::cout << pattern_set[i][j];
+			std::cerr << pattern_set[i][j];
 		}
-		std::cout << std::endl;
+		std::cerr << std::endl;
 	}
 }
 
